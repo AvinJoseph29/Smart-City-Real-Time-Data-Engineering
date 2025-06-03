@@ -220,66 +220,53 @@ AWS
 •	The queries and exploration are made from ATHENA as you click
 on “table data” 
 
+![image](https://github.com/user-attachments/assets/9cdc0f33-49a8-4b7f-9f3f-671e45df9fd6)
 
 ![image](https://github.com/user-attachments/assets/9225e8f3-76a9-4231-abb0-654532d33ce7)
  
 You are not able to run a query against the tables until you set an output directory to the queries
 
+![image](https://github.com/user-attachments/assets/735da45c-07ca-4380-9484-6e8cd899177a)
 
+![image](https://github.com/user-attachments/assets/016b3bd1-ff40-493d-98d5-8241045dbfa6)
 
-
-
-
-
-
-
-
-
-
-
-  
 Browse your bucket address and write by hand “/output” at the end, thus a new folder will be created into S3 to save the queries results
+![image](https://github.com/user-attachments/assets/30ce55c8-365a-40e8-af5f-e4856627837c)
 
- 
 Now you should be able to run an exploratory query to all the tables
 
+![image](https://github.com/user-attachments/assets/c387cf8d-8ce0-4234-8280-9dca83326e3c)
  
+![image](https://github.com/user-attachments/assets/5bd7e9a9-e0d2-4ba5-bdae-eccaef4b2d5b)
 
-  
-
-  
-
-  
-
-
+![image](https://github.com/user-attachments/assets/da72d8f8-8ce5-48eb-9541-386f62ddbb72)
+ 
+![image](https://github.com/user-attachments/assets/65bd76b9-5a42-474c-9e29-3f5e63926b8f)
 
 
 AWS
 Redshift cluster creation, configuration and permissions 
+
+![image](https://github.com/user-attachments/assets/5be5f0d3-169d-4eb1-9b39-ea502a145c39)
+
+![image](https://github.com/user-attachments/assets/a17ea93c-6a0d-4e83-8570-a4ad9152acf1)
   
+![image](https://github.com/user-attachments/assets/e6fa043e-f15b-4857-80b9-df28bf3df7c0)
   
+![image](https://github.com/user-attachments/assets/83022623-e139-4083-a030-bbcca0d165fb)
 
+![image](https://github.com/user-attachments/assets/88d9f5f9-de61-4a41-b36e-bfb4fd616b36)
   
+![image](https://github.com/user-attachments/assets/e4db6276-af51-4218-a39b-9d87bb75730b)
   
+![image](https://github.com/user-attachments/assets/bf5abf5c-980f-4a65-ae75-4fca9019e48b)
 
+![image](https://github.com/user-attachments/assets/b867851d-7ba9-48c6-8255-c416a43571ee)
   
-
-
-
-
-
-
-  
-  
-
-
-
-
-
-
   
 It doesnot refresh automaticaly, so you need to refresh the create cluster page and fill in all the information again.
 By the iam roles you will be able to select the recently created role
+![image](https://github.com/user-attachments/assets/9fbed18d-b8c9-43e2-a5bb-08a737ce9984)
 
  
 If you don’t have any VPC. You need to create a new VPC which créate ifself automatically a security group
@@ -287,25 +274,16 @@ If you don’t have any VPC. You need to create a new VPC which créate ifself a
 
 You need to create a Cluster subnet group (this is mandatory to create the redshift cluster). This subnet group Will be assigned to the VPC created before. See next slides
  
+![image](https://github.com/user-attachments/assets/21415bff-86f2-4aa5-9ada-ca311b40b28b)
 
+![image](https://github.com/user-attachments/assets/04f098d1-7a74-436f-a624-9aed823fca31)
 
+![image](https://github.com/user-attachments/assets/3b2655e4-c52d-4fad-a250-2361945e04c0)
 
+![image](https://github.com/user-attachments/assets/c4eed37b-9c13-460c-94e5-4e8359d119d7)
 
+![image](https://github.com/user-attachments/assets/215a2712-2980-47de-99c5-31be7c1c718e)
 
-  
-
-  
-
-
-
-
-
-  
-
-
-
-
-  
 Important:
 Go to VPC console > Security Groups > security group (default)
 
@@ -314,67 +292,67 @@ Type:Custom port: 5439 source: My Ip
 
 This allow the traffic from your IP to readshift. Without this you won’t be able to connect redshift from
 your pc
- 
+
+![image](https://github.com/user-attachments/assets/42560c82-9c11-4c40-9543-15c03547a9a6)
+
+![image](https://github.com/user-attachments/assets/12adf035-9571-4522-be9c-eae689caf645)
   
 create a Cluster subnet group (this is mandatory to create the redshift cluster). This subnet group Will be
 assigned to the VPC created before. See next slides
 
+![image](https://github.com/user-attachments/assets/597d850a-0ff2-4a8d-b97a-99a2ffb6adf2)
 
+![image](https://github.com/user-attachments/assets/f3b6453d-e7be-4997-8ecf-16993d87b5ea)
 
- 
+![image](https://github.com/user-attachments/assets/a178303f-6e77-4d75-8cfc-2afde4521af7)
 
-
-  
-
-  
- 
-
-
-
-
+![image](https://github.com/user-attachments/assets/572fb64e-1b8e-4823-9ab9-58b9ef11de4a)
 
 
 After resfreshing, again fill in the the fields…
 If you have read this documentation previously, you can create all the needed VPC and cluster subnet group in advance to ease the process 
   
+![image](https://github.com/user-attachments/assets/afbd4688-1f2f-4cf7-9cb0-0d50b98c27ce)
 
-
-
-
+![image](https://github.com/user-attachments/assets/b75970d1-3349-4662-8b1e-7323076afe85)
   
 It takes around 15 minutes to be created
+
+![image](https://github.com/user-attachments/assets/d27a1a43-63bc-4d83-babf-2c204addc808)
+
  
 The Redshift cluster is already created, then lets explore the content and create an external schema that points to the tables on Glue. In this way you will be able to query Redshift database directly and retrieve the transformed data persisted in Glue.
 
 To do that, just copy the jdbc connection chain and create a server connection in your computer using Dbeaver.
 
+![image](https://github.com/user-attachments/assets/d2139707-eab4-4542-9f25-497811edd715)
  
+![image](https://github.com/user-attachments/assets/4e5fa036-fc22-40a5-bf6e-dfd4f259eb50)
   
 Once connected to redshift you can explore the existing schemas.
 In this case, public is where we want to work in, but there aren’t tables yet.
- 
+
+![image](https://github.com/user-attachments/assets/0b4c1353-1020-4a79-b987-3b3b2775b79c)
+
 Create an external schema pointing to the Glue catalog and created database. Pass your IAM role – go to IAM and select the role created before and copy the arn. This schema allows to query against redshift and retrieving the data from Glue
  
+![image](https://github.com/user-attachments/assets/f968f42d-1d50-47d1-8983-a6adf5e983f7)
 
+![image](https://github.com/user-attachments/assets/1779d354-d5cf-4168-a8f0-ef3cf1cdc7d3)
 
+![image](https://github.com/user-attachments/assets/6d76e9b2-6cf8-4ef2-9a14-717d6079d4c3)
 
+![image](https://github.com/user-attachments/assets/23f8cfe3-f070-4709-ae77-31f71446a366)
 
-
-  
-
-  
- 
-  
-
-
-
+![image](https://github.com/user-attachments/assets/ffa652b4-24bd-4e2d-9e73-0f1b48479865)
 
 POWER BI
 •	DirectQuery or import the data from redshift
 •	With a student License / Premium / PRO you are able to use the redshift-powerBI connector 
 On the backgroung you can see other tables. This was the test I made before in order to prepare the dashboard a bit, to avoid overcosts for having the aws services deployed. In this way, It was just conecting, cleaning some columns and visualize.
 
- 
+ ![image](https://github.com/user-attachments/assets/2bb09820-fc68-4882-ab58-a807bdf846b5)
+
 
 
 
@@ -386,6 +364,7 @@ The best way I found to simulate a streaming was implementing the tool “play a
 
 This allows to represent the data sequentially. 
 
+![image](https://github.com/user-attachments/assets/8e9282b2-e204-4bd8-a397-afb43e4b0b9e)
 
 
 
@@ -393,18 +372,20 @@ AWS LAMBDA
 Create a Lambda function to simulate a streaming leverage.
 The function queries against redshift, getting the vehicle_data table, and sending the file in little batchs to Power BI API. 
 
+![image](https://github.com/user-attachments/assets/0ec496c4-619f-4f65-8495-ee6e5a363798)
+
+![image](https://github.com/user-attachments/assets/fd73f6ac-b9eb-485c-8338-f5f22026a42b)
 
 
-
-
-  
- 
 La Lambda’s layer allows to upload the libraries needed to run the function properly. This aws environment does not
 have many Python libraries installed by default.
 Check the Commands_and_Comments.txt file in my Repo to know hoy to create this python.zip. 
 
+![image](https://github.com/user-attachments/assets/470906c3-9d10-4ddf-89b2-d95da4de377c)
 
+![image](https://github.com/user-attachments/assets/8d1a63a4-78e7-4904-93c1-4e11bec3b379)
 
+![image](https://github.com/user-attachments/assets/ace4930a-c4b9-4930-b6b1-5c7ee5342d00)
 
 
 
