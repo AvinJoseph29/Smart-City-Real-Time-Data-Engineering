@@ -381,43 +381,19 @@ La Lambda’s layer allows to upload the libraries needed to run the function pr
 have many Python libraries installed by default.
 Check the Commands_and_Comments.txt file in my Repo to know hoy to create this python.zip. 
 
-![image](https://github.com/user-attachments/assets/470906c3-9d10-4ddf-89b2-d95da4de377c)
+![image](https://github.com/user-attachments/assets/6cdd6a7c-456e-4182-b1b8-c1f79c6274c0)
 
-![image](https://github.com/user-attachments/assets/8d1a63a4-78e7-4904-93c1-4e11bec3b379)
+![image](https://github.com/user-attachments/assets/7304f883-13b1-4f75-b3e4-aae60a86d00c)
 
+![image](https://github.com/user-attachments/assets/7fee1832-50e0-44c9-a9e5-cadd915b1ba7)
 
+![image](https://github.com/user-attachments/assets/b5cff610-5993-43d2-91e3-cfa2e5f5f970)
 
-![image](https://github.com/user-attachments/assets/ace4930a-c4b9-4930-b6b1-5c7ee5342d00)
+![image](https://github.com/user-attachments/assets/c42e5048-4ce3-42fd-a7d0-fc8551361ded)
 
+![image](https://github.com/user-attachments/assets/9c7fdcb2-b806-462c-baf8-3b567e3512c4)
 
-
-
-
-
-  
-
-  
-
-
-
-
-
-  
-
-
-
-  
-
-
-
-
-
-
-
-  
-
-
-
+![image](https://github.com/user-attachments/assets/073e1b6f-ad20-4399-8775-604c6b043a2f)
 
   
 The same VPC as for Redshift.
@@ -425,22 +401,24 @@ The same VPC as for Redshift.
 Important:
 Go to
 VPC console > Security Groups
-> security group (default) There add an inbound rule 
- 
+> security group (default) There add an inbound rule
+
+![image](https://github.com/user-attachments/assets/54fdb40c-db62-4432-9513-0e0117b30004)
+
 Wait until updating succes
+
+![image](https://github.com/user-attachments/assets/9947f042-1446-423d-b268-c1e777808c99)
 
 And proceed adding a layer (which contains the Python libraries
  
+![image](https://github.com/user-attachments/assets/96b80bd5-28a9-4b87-a326-dedeef73fe25)
 
+![image](https://github.com/user-attachments/assets/601c47ed-cb42-419d-b976-606bcd873659)
 
+![image](https://github.com/user-attachments/assets/7110cf6a-37c7-4274-ac30-5f2d1838de57)
   
+![image](https://github.com/user-attachments/assets/b8b2220d-f6a2-4cad-bb18-e17ee68bf70e)
 
-
-  
-
-
-
-  
 Although I was able to query redshift from Lambda, unfortunately I pretended to save the table vehicle_data into a dataframe and transform it, in order to pass the data as Json to PowerBI API correctly.
 
 That’s why the location columna in my code, retrieves a json containing latitude and longitud as key value in json format for this columna only.
@@ -449,6 +427,9 @@ the libraries needed to transform a dataframe with panda aren’t to much, the p
 libraries that work behind and ables the main library runs correctly.
 
 I felt in an endless Flow of errors adding to the Layer all the libraries inside the Python.zip, until I reached the error below and I decided to stop and trying such streaming simulation with lambda in the next Project.
+
+![image](https://github.com/user-attachments/assets/7885e004-7f9f-4e5a-b454-27f11e509de9)
+
  
 PowerBI API https://app.powerbi.com/groups/me/list?experience=power-bi
 •	Create a new streaming data set
