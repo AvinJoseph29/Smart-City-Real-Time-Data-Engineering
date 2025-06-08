@@ -1,18 +1,27 @@
-# Smart-City-Real-Time-Data-Engineering
+# 🚦 AWS Smart City Real-Time Data Engineering Project
+
+---
+
+## 📌 Architecture Overview
+
+- GPS GPX data & weather data from OpenWeather API
+- Streaming to Kafka topics
+- Spark consumes Kafka and writes processed data to S3 as Parquet
+- AWS Glue crawlers transform Parquet into queryable tables
+- Athena and Redshift allow querying the transformed data
+- Lambda simulates streaming to Power BI using Power BI REST API
 
 ![image](https://github.com/user-attachments/assets/4cf40083-a66a-4698-a835-58ceac7fd417)
 
-Project Setup
-Docker
+## 🧰 Project Setup
 
-Kafka and Spark code and configuration
+### 🐳 Docker + Kafka + Spark Setup
 
+Start Zookeeper, Kafka Broker, Spark Master and Worker containers:
 
-Creating zookeeper and Broker docker containers
+```bash
+docker-compose up -d
 ```
-SmartCityRvm touch docker-compose.yaml
-```
-
 ![image](https://github.com/user-attachments/assets/93092a5c-029b-42ff-92e8-dcadb96dc689)
 
 Zookeeper, Broker, Spark master and workers docker containers creation
@@ -25,15 +34,13 @@ Checking Spark cluster creation
 
 ![image](https://github.com/user-attachments/assets/5d174ba5-b238-44fe-b4ac-ded4e53d1a8d)
 
-Openweather
-Registration and endpoint Discovery
+🌤️ OpenWeather API Integration
 (after this go to the code and implement data extraction)
 https://openweathermap.org/api
 
-Free tier weather data:
-https://openweathermap.org/current
-Free tier air polution data:
-https://openweathermap.org/api/air-pollution 
+1. Register and get your API Key from:
+   - Weather Data: https://openweathermap.org/current
+   - Air Pollution Data: https://openweathermap.org/api/air-pollution
   
 ![image](https://github.com/user-attachments/assets/6b5be098-dd17-4f02-b6bb-6d0226cbf9e0)
 
@@ -59,17 +66,21 @@ POSTMAN COLLECTION within my Repository
 
 
   
-Getting location information from smatphone GPS Tracker: My Tracker
-Note: this was my old Iphone SE with the language set in German, because I was there for five years. I still keep it and I used it to track my Motorbike driving lessons.
-The records are from 2 years ago since then I was learning how to create an End-to-End project with the data. 
+ screenshot3
+
+📍 GPS Tracking Input
+- Used `.gpx` files from motorbike driving lessons, captured using an iPhone SE 
+- These files are streamed as real-time vehicle tracking data into Kafka.
   
 
 
 
-AWS
-•	Create buckets and its Public policies
-Empty buckets, the folders will be created as you run the code
-•	Create access key 
+☁️ AWS Setup
+1. Create S3 Buckets
+- Create empty S3 buckets.
+- The folders will be created automatically during Spark job execution.
+- Set proper bucket policies and enable public access if needed.
+
 
 ![image](https://github.com/user-attachments/assets/ee2d6355-0b93-4de1-b1b8-146f2bfdd68e)
   
@@ -109,16 +120,17 @@ The keys will be passed in arguments withtin the code
 
 ![image](https://github.com/user-attachments/assets/79db1289-8a5b-4eaa-97ad-2e87005f0f8b)
 
-  
-Trigger the Streaming process
+ 
+⚡ Start the Streaming Pipeline
+Step 1: Trigger Kafka Streaming & Send Data to Topics
 •	Docker compose up –d
 •	Trigger kafka and send data to the topics.
 Run: jobs/main.py
-•	Trigger Spark to consume topics and send information to S3.
+Step 2: Trigger Spark to Consume Kafka & Write to S3
 Run: docker exec -it smartcityrvm-spark-master-1 spark-submit `
 --master spark://spark-master:7077 `
 --packages org.apache.spark:spark-sql-kafka-0- 10_2.12:3.5.0,org.apache.hadoop:hadoop- aws:3.3.1,com.amazonaws:aws-java-sdk:1.11.469 ` jobs/spark-city.py
-All the relevant commands are available into a .txt file in my 
+
   
   
 ![image](https://github.com/user-attachments/assets/1ed1f8f9-b2d6-4022-a0c8-5a117cd2de3b)
@@ -127,14 +139,18 @@ All the relevant commands are available into a .txt file in my
 
 ![image](https://github.com/user-attachments/assets/a1c71663-8c19-4485-9ca3-48a9d2e7c2d0)
  
-SOME FAILED TESTS 
+🧪 Troubleshooting: Kafka Offset Loss
 To avoid the process to fail, I needed to set this option “failOnDataloss” to “False”.
 Due to the Broker consistency and connection with Spark, it may occurs that few registers are lost, and this option doesnot allow the process to continue if there are some data missing by default.
 
-“The ERROR:
-ERROR MicroBatchExecution: Query [id = fac716d9-cdde-491c-bab8-9decd5dfa957, runId = 27662566-449f-41b6-965f-
-f88387f5d424] terminated with error
-java.lang.IllegalStateException: Partition weather_data-0's offset was changed from 30 to 14, some data may have been missed.
+❌ Error
+
+java.lang.IllegalStateException: Partition weather_data-0's offset was changed from 30 to 14, some data may have been missed...
+
+✅ Fix
+
+.option("failOnDataLoss", "false")
+This allows Spark to continue streaming even if some Kafka data has been lost.
 Some data may have been lost because they are not available in Kafka any more; either the data was aged out by Kafka or the topic may have been deleted before all the data in the topic was processed. If you don't want your streaming query to fail on such cases, set the source option "failOnDataLoss" to "false". “ 
 
 ![image](https://github.com/user-attachments/assets/2ea6cc75-2e1d-43e4-a9d4-6f8f9f3e8223)
@@ -149,8 +165,12 @@ Once corrected the issue before, the streaming process from spark to S3 runs pro
 
 ![image](https://github.com/user-attachments/assets/d3e656e1-ca56-4f8f-b115-acab2ae55dfa)
   
-AFTER AROUND 35 MINUTES, ALL THE LINES FROM THE .GPX FILES WERE PROCESSED, FIRST
-TO KAFKA INTO TOPICS AND AFTER CONSUMED BY SPARK TO S3
+✅ Kafka → Spark → S3
+
+After ~35 minutes, all `.gpx` records are successfully:
+- Streamed into Kafka topics
+- Consumed by Spark Structured Streaming
+- Stored in S3 as `.parquet` files
  
 ![image](https://github.com/user-attachments/assets/ff297875-e0d3-42a4-b0a8-7c870065b496)
 
@@ -165,9 +185,14 @@ AWS
 
 ![image](https://github.com/user-attachments/assets/351166d8-e050-4c80-b520-5d6488e4140f)
 
+---
 
-AWS
-•	Create crawlers to transform all the .parquet files into an explorable structure as tables in a database. 
+## 🧬 AWS Glue Crawlers and Athena Integration
+
+### 🗂️ Create Glue Crawlers 
+
+- Navigate to AWS Glue Console.
+- Create new Crawlers for each dataset in S3 (written by Spark in `.parquet` format).
  
 ![image](https://github.com/user-attachments/assets/77a8b762-cce1-4701-acf3-43d882c973e7)
 
@@ -183,7 +208,7 @@ AWS
 
 ![image](https://github.com/user-attachments/assets/926013cb-7401-45d0-ba72-68e56944562d)
   
-You probably don’t have an IAM role created. Just create a new one.
+- You probably don’t have an IAM role created. Just create a new one.
 
 ![image](https://github.com/user-attachments/assets/e0ca14c4-1ece-4927-bf3e-99af8a97bf25)
 
@@ -191,7 +216,7 @@ You probably don’t have an IAM role created. Just create a new one.
 
 ![image](https://github.com/user-attachments/assets/55f336e5-b46d-41ee-9ad9-0a74a26adfcb)
   
-You probably don’t have a Database created. Just create a new one.
+- Choose the database or create a new one during crawler setup.
 
  ![image](https://github.com/user-attachments/assets/c5956fa6-adb1-4bff-8725-4e6dae0fbebe)
 
@@ -199,15 +224,16 @@ You probably don’t have a Database created. Just create a new one.
 
 ![image](https://github.com/user-attachments/assets/9d0f42c1-9f74-4bda-b600-eeaa578a4c91)
   
-Advanced options by default, I didn’t touched it
+- Keep advanced options as default.
 
  ![image](https://github.com/user-attachments/assets/7da32b79-af7c-4627-b292-a5f8005d1aa6)
 
 ![image](https://github.com/user-attachments/assets/4fbbfbad-7ce8-42da-ba30-73f905894068)
 
   
-Run the crawler to start transforming the .parquet files
-Run this when the streaming process is completed only!!!
+▶️ Run the Crawlers
+- Only run the crawlers after the Spark streaming job has completed writing to S3.
+- Crawlers will convert `.parquet` data into tables in the AWS Glue Data Catalog.
 
  ![image](https://github.com/user-attachments/assets/fe38a627-afba-41d1-b966-37805f4f6182)
 
@@ -215,7 +241,7 @@ Run this when the streaming process is completed only!!!
 
 ![image](https://github.com/user-attachments/assets/c015d4fd-f01e-4308-8db4-eef51ca587b4)
 
-AWS
+🔍 Explore Tables via AWS Athena
 •	Access to Glue and explore the transformed tables, available to be queried.
 •	The queries and exploration are made from ATHENA as you click
 on “table data” 
@@ -230,10 +256,13 @@ You are not able to run a query against the tables until you set an output direc
 
 ![image](https://github.com/user-attachments/assets/016b3bd1-ff40-493d-98d5-8241045dbfa6)
 
-Browse your bucket address and write by hand “/output” at the end, thus a new folder will be created into S3 to save the queries results
+📝 Set Output Location for Athena Queries
+
+- Go to Athena settings and configure an output S3 directory (e.g., `s3://your-bucket/output/`).
+- If the folder doesn't exist, Athena will create it.
 ![image](https://github.com/user-attachments/assets/30ce55c8-365a-40e8-af5f-e4856627837c)
 
-Now you should be able to run an exploratory query to all the tables
+- Now, run exploratory SQL queries against the tables.
 
 ![image](https://github.com/user-attachments/assets/c387cf8d-8ce0-4234-8280-9dca83326e3c)
  
@@ -244,8 +273,10 @@ Now you should be able to run an exploratory query to all the tables
 ![image](https://github.com/user-attachments/assets/65bd76b9-5a42-474c-9e29-3f5e63926b8f)
 
 
-AWS
-Redshift cluster creation, configuration and permissions 
+🧱 AWS Redshift Integration
+🏗️ Create Redshift Cluster
+
+- Open Redshift console and create a new cluster.
 
 ![image](https://github.com/user-attachments/assets/5be5f0d3-169d-4eb1-9b39-ea502a145c39)
 
@@ -264,15 +295,15 @@ Redshift cluster creation, configuration and permissions
 ![image](https://github.com/user-attachments/assets/b867851d-7ba9-48c6-8255-c416a43571ee)
   
   
-It doesnot refresh automaticaly, so you need to refresh the create cluster page and fill in all the information again.
+-It doesnot refresh automaticaly, so you need to refresh the create cluster page and fill in all the information again.
 By the iam roles you will be able to select the recently created role
 ![image](https://github.com/user-attachments/assets/9fbed18d-b8c9-43e2-a5bb-08a737ce9984)
 
  
-If you don’t have any VPC. You need to create a new VPC which créate ifself automatically a security group
-(default).
+- If no VPC exists, create a new one (automatically creates default security group).
 
-You need to create a Cluster subnet group (this is mandatory to create the redshift cluster). This subnet group Will be assigned to the VPC created before. See next slides
+
+You need to create a Cluster subnet group (this is mandatory to create the redshift cluster). This subnet group Will be assigned to the VPC created before. 
  
 ![image](https://github.com/user-attachments/assets/21415bff-86f2-4aa5-9ada-ca311b40b28b)
 
@@ -284,21 +315,26 @@ You need to create a Cluster subnet group (this is mandatory to create the redsh
 
 ![image](https://github.com/user-attachments/assets/215a2712-2980-47de-99c5-31be7c1c718e)
 
-Important:
-Go to VPC console > Security Groups > security group (default)
+🔒 Security Group Configuration
 
-There add an inbound rule:
-Type:Custom port: 5439 source: My Ip
+Go to:
+VPC Console > Security Groups > default group > Inbound Rules
 
-This allow the traffic from your IP to readshift. Without this you won’t be able to connect redshift from
-your pc
+Add rule:
+- Type: Custom TCP
+- Port Range: 5439
+- Source: My IP (your machine's IP)
 
 ![image](https://github.com/user-attachments/assets/42560c82-9c11-4c40-9543-15c03547a9a6)
 
 ![image](https://github.com/user-attachments/assets/12adf035-9571-4522-be9c-eae689caf645)
   
-create a Cluster subnet group (this is mandatory to create the redshift cluster). This subnet group Will be
-assigned to the VPC created before. See next slides
+🌐 Create Redshift Subnet Group
+
+- Go to Redshift > Subnet Groups > Create
+- Select the VPC created earlier
+- Add subnets (from available AZs) to the group
+- Required for successful cluster creation
 
 ![image](https://github.com/user-attachments/assets/597d850a-0ff2-4a8d-b97a-99a2ffb6adf2)
 
@@ -309,14 +345,14 @@ assigned to the VPC created before. See next slides
 ![image](https://github.com/user-attachments/assets/572fb64e-1b8e-4823-9ab9-58b9ef11de4a)
 
 
-After resfreshing, again fill in the the fields…
-If you have read this documentation previously, you can create all the needed VPC and cluster subnet group in advance to ease the process 
+⏳ Wait for Cluster to be Created
+
+- Refresh the cluster creation page if needed
+- The process can take up to 15 minutes
   
 ![image](https://github.com/user-attachments/assets/afbd4688-1f2f-4cf7-9cb0-0d50b98c27ce)
 
 ![image](https://github.com/user-attachments/assets/b75970d1-3349-4662-8b1e-7323076afe85)
-  
-It takes around 15 minutes to be created
 
 ![image](https://github.com/user-attachments/assets/d27a1a43-63bc-4d83-babf-2c204addc808)
 
@@ -352,10 +388,6 @@ POWER BI
 On the backgroung you can see other tables. This was the test I made before in order to prepare the dashboard a bit, to avoid overcosts for having the aws services deployed. In this way, It was just conecting, cleaning some columns and visualize.
 
  ![image](https://github.com/user-attachments/assets/2bb09820-fc68-4882-ab58-a807bdf846b5)
-
-
-
-
 
 
 It is not a streaming intake from redshift.
@@ -426,7 +458,7 @@ That’s why the location columna in my code, retrieves a json containing latitu
 the libraries needed to transform a dataframe with panda aren’t to much, the problem I found is the bunch of
 libraries that work behind and ables the main library runs correctly.
 
-I felt in an endless Flow of errors adding to the Layer all the libraries inside the Python.zip, until I reached the error below and I decided to stop and trying such streaming simulation with lambda in the next Project.
+
 
 ![image](https://github.com/user-attachments/assets/7885e004-7f9f-4e5a-b454-27f11e509de9)
 
@@ -434,7 +466,7 @@ I felt in an endless Flow of errors adding to the Layer all the libraries inside
 PowerBI API https://app.powerbi.com/groups/me/list?experience=power-bi
 •	Create a new streaming data set
 •	Select API
-•	Give it a name and entry the fields (next slide)
+•	Give it a name and entry the fields 
  
 PowerBI API
 Once you add all the fields, PBI shows an example JSON schema which you must use in order to send the data to
@@ -445,7 +477,9 @@ Finally you get the Endpoint URL and json schema to be used
  
 PowerBI API
 Create a dashboard
-In my case I’m not receiving data because of the issue with the Lambda Layer and the library uploading
+
+![image](https://github.com/user-attachments/assets/7bc568f5-0db7-453a-ba9c-96e2edd81a3e)
+
 
 
 
