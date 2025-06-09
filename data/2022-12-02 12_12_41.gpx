@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gpx version="1.1" creator="MyTracks" xmlns="http://www.topografix.com/GPX/1/1"
+     xmlns:mytracks="http://mytracks.stichling.info/myTracksGPX/1/0">
+  <trk>
+    <name>Sample Driving Route</name>
+    <trkseg>
+      <trkpt lat="36.7079" lon="-4.4656">
+        <ele>18.5</ele>
+        <time>2022-12-02T08:00:00Z</time>
+        <extensions>
+          <mytracks:speed>10.2</mytracks:speed>
+          <mytracks:length>0.0</mytracks:length>
+        </extensions>
+      </trkpt>
+      <trkpt lat="36.7082" lon="-4.4651">
+        <ele>19.0</ele>
+        <time>2022-12-02T08:00:30Z</time>
+        <extensions>
+          <mytracks:speed>12.5</mytracks:speed>
+          <mytracks:length>50.0</mytracks:length>
+        </extensions>
+      </trkpt>
+      <trkpt lat="36.7085" lon="-4.4648">
+        <ele>19.7</ele>
+        <time>2022-12-02T08:01:00Z</time>
+        <extensions>
+          <mytracks:speed>13.8</mytracks:speed>
+          <mytracks:length>100.0</mytracks:length>
+        </extensions>
+      </trkpt>
+    </trkseg>
+  </trk>
+</gpx>
