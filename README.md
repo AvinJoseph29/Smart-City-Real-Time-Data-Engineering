@@ -34,7 +34,8 @@ Checking Spark cluster creation
 
 ![image](https://github.com/user-attachments/assets/5d174ba5-b238-44fe-b4ac-ded4e53d1a8d)
 
-🌤️ OpenWeather API Integration
+### 🌤️ OpenWeather API Integration
+
 (after this go to the code and implement data extraction)
 https://openweathermap.org/api
 
@@ -66,16 +67,16 @@ POSTMAN COLLECTION within my Repository
 
 
   
- screenshot3
 
-📍 GPS Tracking Input
+### 📍 GPS Tracking Input
 - Used `.gpx` files from motorbike driving lessons, captured using an iPhone SE 
 - These files are streamed as real-time vehicle tracking data into Kafka.
   
 
 
 
-☁️ AWS Setup
+### ☁️ AWS Setup
+
 1. Create S3 Buckets
 - Create empty S3 buckets.
 - The folders will be created automatically during Spark job execution.
@@ -121,14 +122,15 @@ The keys will be passed in arguments withtin the code
 ![image](https://github.com/user-attachments/assets/79db1289-8a5b-4eaa-97ad-2e87005f0f8b)
 
  
-⚡ Start the Streaming Pipeline
+### ⚡ Start the Streaming Pipeline
+
 Step 1: Trigger Kafka Streaming & Send Data to Topics
 •	Docker compose up –d
 •	Trigger kafka and send data to the topics.
 Run: jobs/main.py
 Step 2: Trigger Spark to Consume Kafka & Write to S3
-Run: docker exec -it smartcityrvm-spark-master-1 spark-submit `
---master spark://spark-master:7077 `
+Run: docker exec -it smartcityrvm-spark-master-1 spark-submit 
+--master spark://spark-master:7077 
 --packages org.apache.spark:spark-sql-kafka-0- 10_2.12:3.5.0,org.apache.hadoop:hadoop- aws:3.3.1,com.amazonaws:aws-java-sdk:1.11.469 ` jobs/spark-city.py
 
   
@@ -139,7 +141,7 @@ Run: docker exec -it smartcityrvm-spark-master-1 spark-submit `
 
 ![image](https://github.com/user-attachments/assets/a1c71663-8c19-4485-9ca3-48a9d2e7c2d0)
  
-🧪 Troubleshooting: Kafka Offset Loss
+#### 🧪 Troubleshooting: Kafka Offset Loss
 To avoid the process to fail, I needed to set this option “failOnDataloss” to “False”.
 Due to the Broker consistency and connection with Spark, it may occurs that few registers are lost, and this option doesnot allow the process to continue if there are some data missing by default.
 
@@ -231,7 +233,7 @@ AWS
 ![image](https://github.com/user-attachments/assets/4fbbfbad-7ce8-42da-ba30-73f905894068)
 
   
-▶️ Run the Crawlers
+#### ▶️ Run the Crawlers
 - Only run the crawlers after the Spark streaming job has completed writing to S3.
 - Crawlers will convert `.parquet` data into tables in the AWS Glue Data Catalog.
 
@@ -241,7 +243,7 @@ AWS
 
 ![image](https://github.com/user-attachments/assets/c015d4fd-f01e-4308-8db4-eef51ca587b4)
 
-🔍 Explore Tables via AWS Athena
+#### 🔍 Explore Tables via AWS Athena
 •	Access to Glue and explore the transformed tables, available to be queried.
 •	The queries and exploration are made from ATHENA as you click
 on “table data” 
@@ -256,7 +258,7 @@ You are not able to run a query against the tables until you set an output direc
 
 ![image](https://github.com/user-attachments/assets/016b3bd1-ff40-493d-98d5-8241045dbfa6)
 
-📝 Set Output Location for Athena Queries
+#### 📝 Set Output Location for Athena Queries
 
 - Go to Athena settings and configure an output S3 directory (e.g., `s3://your-bucket/output/`).
 - If the folder doesn't exist, Athena will create it.
@@ -273,8 +275,8 @@ You are not able to run a query against the tables until you set an output direc
 ![image](https://github.com/user-attachments/assets/65bd76b9-5a42-474c-9e29-3f5e63926b8f)
 
 
-🧱 AWS Redshift Integration
-🏗️ Create Redshift Cluster
+## 🧱 AWS Redshift Integration
+### 🏗️ Create Redshift Cluster
 
 - Open Redshift console and create a new cluster.
 
@@ -315,7 +317,7 @@ You need to create a Cluster subnet group (this is mandatory to create the redsh
 
 ![image](https://github.com/user-attachments/assets/215a2712-2980-47de-99c5-31be7c1c718e)
 
-🔒 Security Group Configuration
+#### 🔒 Security Group Configuration
 
 Go to:
 VPC Console > Security Groups > default group > Inbound Rules
@@ -329,7 +331,7 @@ Add rule:
 
 ![image](https://github.com/user-attachments/assets/12adf035-9571-4522-be9c-eae689caf645)
   
-🌐 Create Redshift Subnet Group
+#### 🌐 Create Redshift Subnet Group
 
 - Go to Redshift > Subnet Groups > Create
 - Select the VPC created earlier
@@ -382,36 +384,37 @@ Create an external schema pointing to the Glue catalog and created database. Pas
 
 ![image](https://github.com/user-attachments/assets/ffa652b4-24bd-4e2d-9e73-0f1b48479865)
 
-POWER BI
-•	DirectQuery or import the data from redshift
-•	With a student License / Premium / PRO you are able to use the redshift-powerBI connector 
-On the backgroung you can see other tables. This was the test I made before in order to prepare the dashboard a bit, to avoid overcosts for having the aws services deployed. In this way, It was just conecting, cleaning some columns and visualize.
+## 📊Power BI Integration
+- Use DirectQuery or Import mode
+- With Student / Premium / PRO license, use Redshift-PowerBI connector
 
  ![image](https://github.com/user-attachments/assets/2bb09820-fc68-4882-ab58-a807bdf846b5)
 
 
-It is not a streaming intake from redshift.
+#### ▶️ Simulate Streaming in Power BI
 
-The best way I found to simulate a streaming was implementing the tool “play axis” in powerbi.
-
-This allows to represent the data sequentially. 
+- Use "Play Axis" visual to simulate real-time updates
+- This enables sequential data representation even if Redshift is not a real stream
 
 ![image](https://github.com/user-attachments/assets/8e9282b2-e204-4bd8-a397-afb43e4b0b9e)
 
 
 
-AWS LAMBDA
-Create a Lambda function to simulate a streaming leverage.
-The function queries against redshift, getting the vehicle_data table, and sending the file in little batchs to Power BI API. 
+## 🧬 AWS Lambda for Power BI Streaming
+### 🛠️ Create Lambda Function
+- Query Redshift inside Lambda
+- Fetch rows from `vehicle_data` table
+- Send data in small batches to Power BI REST API endpoint
 
 ![image](https://github.com/user-attachments/assets/0ec496c4-619f-4f65-8495-ee6e5a363798)
 
 ![image](https://github.com/user-attachments/assets/fd73f6ac-b9eb-485c-8338-f5f22026a42b)
 
+### 📦 Add Python Libraries via Layer
 
-La Lambda’s layer allows to upload the libraries needed to run the function properly. This aws environment does not
-have many Python libraries installed by default.
-Check the Commands_and_Comments.txt file in my Repo to know hoy to create this python.zip. 
+- AWS Lambda Python runtime does not include many libraries
+- Create a `python.zip` with required libraries (like `pandas`, `requests`, etc.)
+- Upload as a Lambda Layer
 
 ![image](https://github.com/user-attachments/assets/6cdd6a7c-456e-4182-b1b8-c1f79c6274c0)
 
@@ -427,13 +430,14 @@ Check the Commands_and_Comments.txt file in my Repo to know hoy to create this p
 
 ![image](https://github.com/user-attachments/assets/073e1b6f-ad20-4399-8775-604c6b043a2f)
 
-  
+### 🔐 Security Setup for Lambda  
 The same VPC as for Redshift.
 
 Important:
-Go to
-VPC console > Security Groups
-> security group (default) There add an inbound rule
+Go to:
+VPC Console > Security Groups > default group > Inbound Rules
+
+Add required rules to allow access to Redshift.
 
 ![image](https://github.com/user-attachments/assets/54fdb40c-db62-4432-9513-0e0117b30004)
 
@@ -451,33 +455,64 @@ And proceed adding a layer (which contains the Python libraries
   
 ![image](https://github.com/user-attachments/assets/b8b2220d-f6a2-4cad-bb18-e17ee68bf70e)
 
-Although I was able to query redshift from Lambda, unfortunately I pretended to save the table vehicle_data into a dataframe and transform it, in order to pass the data as Json to PowerBI API correctly.
-
-That’s why the location columna in my code, retrieves a json containing latitude and longitud as key value in json format for this columna only.
-
-the libraries needed to transform a dataframe with panda aren’t to much, the problem I found is the bunch of
-libraries that work behind and ables the main library runs correctly.
-
-
+### 🔄 Final Note on Lambda Streaming Issues
+- Due to missing dependencies, streaming simulation to Power BI from Lambda failed
+- Particularly, pandas transformation failed due to nested dependency issues
+- For now, Power BI API simulation is left for a future iteration
 
 ![image](https://github.com/user-attachments/assets/7885e004-7f9f-4e5a-b454-27f11e509de9)
 
- 
-PowerBI API https://app.powerbi.com/groups/me/list?experience=power-bi
-•	Create a new streaming data set
-•	Select API
-•	Give it a name and entry the fields 
- 
-PowerBI API
-Once you add all the fields, PBI shows an example JSON schema which you must use in order to send the data to
-the endpoint. 
-PowerBI API
-Finally you get the Endpoint URL and json schema to be used
+**NOTE**
+## ✅ Simple Resolution for Lambda + Pandas Dependency Issue
+
+Enable AWS Lambda to:
+
+1. Query Redshift
+2. Transform results using `pandas`
+3. Send JSON data to Power BI API
+
+
+### 🛠️ Simple and Effective Fix: Use AWS Lambda with Docker Image
+
+AWS Lambda now supports **container images**, which can be up to 10 GB and include **all dependencies** like `pandas`, `numpy`, etc.
+
+
+### 📦 Steps to Resolve Using Docker-Based Lambda
+
+#### 1. Create Dockerfile
+
+Dockerfile
+FROM public.ecr.aws/lambda/python:3.9
+
+### Install required packages
+RUN pip install pandas requests psycopg2-binary
+
+### Copy your Lambda function code
+COPY app.py ${LAMBDA_TASK_ROOT}
+
+CMD ["app.handler"]
+
+
+## 📡 Power BI REST API Setup
+### 📥 Create a Streaming Dataset 
+
+1. Go to: https://app.powerbi.com/groups/me/list?experience=power-bi
+2. Create a new Streaming Dataset
+3. Choose "API" and define fields (e.g., time, speed, lat, lng)
 
  
-PowerBI API
-Create a dashboard
+### 📜 Use Power BI JSON Schema
 
+- Copy the sample schema shown by Power BI
+- Use it as your payload format when sending from Lambda or other clients
+
+ 
+### 📊Build Power BI Dashboard
+
+- Use the streaming dataset created
+- Add visuals to represent location, speed, time etc.
+- Real-time data will appear as it's pushed to Power BI API
+  
 ![image](https://github.com/user-attachments/assets/7bc568f5-0db7-453a-ba9c-96e2edd81a3e)
 
 
